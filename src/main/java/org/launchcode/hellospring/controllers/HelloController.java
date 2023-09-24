@@ -34,16 +34,45 @@ public class HelloController {
         return "Hello, " + name + "!";
     }
 
-    // lives at /hello/form
+    // modify the helloForm method to include language selection
     @GetMapping("form")
     public String helloForm() {
         return "<html>" +
                 "<body>" +
-                "<form action='hello' method='post'>" + // submit a request to /hello
-                "<input type='text' name='name'>" +
+                "<form action='greet' method='post'>" + // submit a request to /hello/greet
+                "<input type='text' name='name' placeholder='Your name'>" +
+                "<select name='language'>" +
+                "<option value='English'>English</option>" +
+                "<option value='French'>French</option>" +
+                "<option value='Spanish'>Spanish</option>" +
+                "<option value='Russian'>Russian</option>" +
+                "<option value='German'>German</option>" +
+                "</select>" +
                 "<input type='submit' value='Greet me!'>" +
                 "</form>" +
                 "</body>" +
                 "</html>";
+    }
+
+    // Add a new method that handles the form submission
+    @PostMapping("greet")
+    @ResponseBody
+    public String createMessage(@RequestParam String name, @RequestParam String language) {
+        String greeting = "";
+
+        if (language.equals("English")) {
+            greeting = "Hello, " + name;
+        } else if (language.equals("French")) {
+            greeting = "Bonjour, " + name;
+        } else if (language.equals("Spanish")) {
+            greeting = "Hola, " + name;
+        } else if (language.equals("Russian")) {
+            greeting = "Привет, " + name;
+        } else if (language.equals("German")) {
+            greeting = "Hallo, " + name;
+        }
+
+        String htmlResponse = "<html><body><h1><code>" + greeting + "</code></h1></body></html>";
+        return htmlResponse;
     }
 }
